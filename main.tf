@@ -2,17 +2,16 @@ provider "aws" {
   region = "us-east-1"
 }
 
-# SECURITY NOTE: We are suppressing some advanced checks for this demo
-# to avoid extra costs (like creating KMS keys or extra logging buckets).
-
-# checkov:skip=CKV_AWS_18: "Access logging not needed for simple demo"
-# checkov:skip=CKV_AWS_144: "Cross-region replication is too expensive for demo"
-# checkov:skip=CKV_AWS_145: "Standard AES-256 encryption is sufficient (No KMS needed)"
-# checkov:skip=CKV2_AWS_61: "Lifecycle configuration not needed for demo"
-# checkov:skip=CKV2_AWS_62: "Event notifications not needed for demo"
-
 resource "aws_s3_bucket" "secure_bucket" {
   bucket_prefix = "secure-bucket"
+
+  # --- SECURITY EXCEPTIONS (Suppressions) ---
+  # We place these INSIDE the resource so Checkov cannot miss them.
+  # checkov:skip=CKV_AWS_18: "Access logging not needed for simple demo"
+  # checkov:skip=CKV_AWS_144: "Cross-region replication is too expensive for demo"
+  # checkov:skip=CKV_AWS_145: "Standard AES-256 encryption is sufficient (No KMS needed)"
+  # checkov:skip=CKV2_AWS_61: "Lifecycle configuration not needed for demo"
+  # checkov:skip=CKV2_AWS_62: "Event notifications not needed for demo"
 }
 
 # 1. Enforce Encryption (Passes CKV_AWS_19)
