@@ -1,0 +1,15 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.9
+    commands:
+      - echo "Installing dependencies..."
+      - pip install checkov
+  build:
+    commands:
+      - echo "Running Terraform Security Scan..."
+      # This command scans your main.tf file
+      # If it finds security risks, it will fail the build (Exit Code 1)
+      - checkov -f main.tf
