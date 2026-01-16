@@ -22,3 +22,15 @@ If a developer attempts to provision insecure cloud resources (e.g., unencrypted
 1.  **Scan:** The pipeline scans `main.tf` against 1000+ security policies.
 2.  **Enforce:** If `HIGH` severity issues are found, the build fails (Exit Code 1).
 3.  **Suppress:** False positives or accepted risks are managed via inline code comments (Exception Handling).
+
+```mermaid
+graph LR
+A[Developer Commit] -- Terraform --> B(GitHub)
+B -- Trigger --> C{AWS CodeBuild}
+C -- Run Scan --> D[Checkov Analysis]
+D -- Found Risks? --> E{Decision}
+E -- Yes (Critical) --> F[❌ BLOCK BUILD]
+E -- No (or Suppressed) --> G[✅ PASS & PROVISION]
+style F fill:#ff0000,stroke:#333,stroke-width:2px
+style G fill:#00ff00,stroke:#333,stroke-width:2px
+```
